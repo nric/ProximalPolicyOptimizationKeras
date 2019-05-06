@@ -1,7 +1,8 @@
-"""This is a deterministic example of a Open Ai's proximal policy optimization actor critic algorithm PPO.
-It is implemented using Tensorflow 2.0 (keras). 
-Part of the code base is from https://github.com/liziniu/RL-PPO-Keras . However, the code there had errors
-but mainly it did not use a GAE type reward and no entropy bonus system.
+"""This is a deterministic Tensorflow 2.0 (keras) implementation of a Open Ai's proximal policy optimization actor critic algorithm PPO.
+Here, it is tested with open ai gym lunar lander v2 but should be easy to adapt to any env that takes an action with a
+defind action space size and returns reward,next_state,done each step.
+Good part of the code base is from https://github.com/liziniu/RL-PPO-Keras . However, the code there had errors
+but mainly it did not use a GAE type reward and no entropy bonus system and was using non IID data (not randomized baches).
 I gave my best to comment the code but I did not include a fundamental lecutre on the logic behind PPO. I highly 
 recommend to watch these two videos to undestand what happens.
 https://youtu.be/WxQfQW48A4A
@@ -10,7 +11,6 @@ https://youtu.be/5P7I-xPq8u8
 todo: 
 check noisydense
 continous version
-
     
 """
 
@@ -30,7 +30,7 @@ class Memory:
     Idea is to fill the memory with trajectories (s,a,r,gae_r,s_,d) tuples and get an arbitary number of
     random batches from the memory for training. After that, clear and fill next set (on policy training).
     The memory gets filled from the Agent object.
-    A special case is the batch_gae which gets calculated once when training on memory starts.
+    A special case is the batch_gae which gets calculated externally once when training on memory starts.
     """
     def __init__(self):
         self.batch_s = []
@@ -44,6 +44,7 @@ class Memory:
 
     def get_batch(self,batch_size):
         """simply retuns a randomized batch from the data in memory
+        r not really needed for training (gae_r is used). but might be interesting for logging.
         """
         for _ in range(batch_size):
             s,a,r,gae_r,s_,d = [],[],[],[],[],[]
