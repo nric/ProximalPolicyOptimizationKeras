@@ -8,9 +8,11 @@ recommend to watch these two videos to undestand what happens.
 https://youtu.be/WxQfQW48A4A
 https://youtu.be/5P7I-xPq8u8
 
-todo: 
-check noisydense
-continous version
+CAVE: This version has currently a bug / is incomplete. 
+The rewards and gae-rewards should be calculated after each episode to get correct values in accordance with the 
+final episoe reward. Currently the buffer is filled for a random step amount and often there is not final reward yet.
+In the lunar lander example this can lead to that the agent never experience the ideal final state which is leanding.
+I will try to upload a fixed version soon.
     
 """
 
@@ -203,6 +205,7 @@ class Agent:
             #return(s,a) = gae + V(s)  |add value of state back to it.
         """
         gae = 0
+        mask = 0
         for i in reversed(range(self.memory.cnt_samples))):
             mask = 0 if self.memory.batch_done[i] else 1
             v = self.get_v(self.memory.batch_s[i])
