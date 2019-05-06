@@ -1,8 +1,6 @@
 # ProximalPolicyOptimizationKeras
 This is a deterministic Tensorflow 2.0 (keras) implementation of a Open Ai's proximal policy optimization actor critic algorithm PPO.
 
-This is a deterministic Tensorflow 2.0 (keras) implementation of a Open Ai's proximal policy optimization actor critic algorithm PPO.
-
 Here, it is tested with open ai gym lunar lander v2 but should be easy to adapt to any env that takes an action with a
 defind action space size and returns reward,next_state,done each step.
 
